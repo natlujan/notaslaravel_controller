@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Notas;
 
+use App\Models\Notas;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,17 +15,19 @@ use App\Notas;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
+
     return view('welcome');
 });
 
-Route::get('notas','NotasController@index')->name('listar');
+Route::get('notas', 'NotasController@index') -> name('notas.index');
 
-Route::get('agregar','NotasController@agregar')->name('nuevanota');
+Route::get('agregar', 'NotasController@agregar')->name('notas.agregar');
 
-Route::post('crear','NotasController@crear') -> name('notas.store');
+Route::post('crear', 'NotasController@crear')->name('notas.crear');
 
-Route::get('notas/{id}/editar','NotasController@editar')->name('notas.edit');
+Route::get('notas/{id}/editar', 'NotasController@editar')->name('notas.editar');
 
-Route::get('notas/{id}','NotasController@id');
+Route::put('notas/{notas}/editar', 'NotasController@update')->name('notas.update');
+
+Route::delete('notas/{id}', 'NotasController@destroy')->name('notas.destroy');
