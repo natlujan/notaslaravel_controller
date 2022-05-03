@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Notas;
+use App\Models\Notas;
 
 class NotasController extends Controller
 {
-    public function index(){
-        $notas = Notas::all();
+    public function index() {
+        $notas = Notas::all();   //DB::table('notas') ->get();
     
         return view('notas', ['notas' => $notas]);
     }
@@ -19,22 +19,36 @@ class NotasController extends Controller
 
     public function crear(Request $request){
         Notas::create([
-            'titulo' => $request -> input('title'),
-            'contenido' => $request -> input('content'),
-        ]);
+            'titulo' => $request->input('title'),
+            'contenido' => $request->input('content')
+            ]);
     
-        return redirect('/');
-    
+            return redirect('/notas');
     }
 
-    public function editar($id) {
+    public function editar($id){
         $notas = Notas::find($id); //DB::table('notas')->where('id', $id)->first();
-    
+        
         return view('editar', ['notas' => $notas]);
-        //return 'Aquí se va a editar la nota: ' .$id;
     }
 
-    public function id($id) {
-        return 'Aquí veremos el detalle de la nota: '.$id;
+    public function update(Notas $notas, Request $request){
+        
+        $notas->update([
+           'titulo' => $request -> input('title'),
+           'contenido' => $request -> input('content'),
+
+        ]);
+
+        return redirect('/notas'); 
     }
+
+    public function destroy($id){
+        $notas = Notas::find($id);
+
+        $notas ->delete();
+
+        return redirect('/notas');
+    }
+
 }
